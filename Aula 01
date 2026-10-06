@@ -1,0 +1,10 @@
+CREATE TABLE integrantes_UGC (
+  matriculaint integer PRIMARY KEY,
+  nome varchar(50) NOT NULL,
+  idade integer CHECK (idade >= 0 and idade <=99),
+  residencia varchar(50),
+  sexo varchar(2)
+  )
+
+## o comando CHECK faz a verificação se a idade está entre 0 e 99
+## integer não tem (x), então precisa do check para restringir caso queira
