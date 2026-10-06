@@ -2,9 +2,23 @@ CREATE TABLE integrantes_UGC (
   matriculaint integer PRIMARY KEY,
   nome varchar(50) NOT NULL,
   idade integer CHECK (idade >= 0 and idade <=99),
-  residencia varchar(50),
+  estado char (2),
+  estadocivil char(2),
   sexo varchar(2)
   )
+  ALTER TABLE integrantes_UGC DROP COLUMN estado;
+  ALTER TABLE integrantes_UGC ADD COLUMN UF char(2);
 
 ## o comando CHECK faz a verificação se a idade está entre 0 e 99
 ## integer não tem (x), então precisa do check para restringir caso queira
+## No SQL, a última coluna antes do parêntese final ) não pode ter vírgula.
+## Depois de inserir a coluna UF ela vai ficar abaixo da coluna "sexo". Se quiser colocar ela em outra posição só é possível alterando o código fonte.
+
+
+----------------
+
+  ALTER TABLE integrantes_UGC RENAME estadocivil to estado_civil;
+
+## no SQL IDE ele só aceita o comando RENAME para renomear uma coluna;
+## De acordo com o SGBD o comando ALTER varia bastante;
+
