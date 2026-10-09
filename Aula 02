@@ -1,0 +1,82 @@
+CREATE TABLE cliente (
+  matriculaint integer PRIMARY KEY,
+  nome varchar(50) NOT NULL,
+  idade integer CHECK (idade >= 0 and idade <=99),
+  estado char (2),
+  estadocivil char(2),
+  sexo varchar(2)
+  )
+  ALTER TABLE cliente DROP COLUMN estado;
+  ALTER TABLE cliente ADD COLUMN UF char(2);
+  ALTER TABLE cliente RENAME COLUMN estadocivil to estado_civil;
+
+
+## Inserir dados na tabela acima
+ INSERT INTO cliente (matriculaint, nome, idade, estado_civil, sexo, uf)
+ VALUES (1, 'José', '33', 'ST', 'M', 'SP')
+ 
+
+## Lista tudo o que está dentro da tabela referenciada
+  SELECT * FROM cliente;
+
+
+## Também pode ser colocado sem listar as colunas:
+  INSERT INTO cliente
+  VALUES (2, 'Maria', '20', 'C', 'F', 'DF')
+
+
+## Podemos inserir só os dados que são necessários, como neste exemplo: MATRICULAINT (PK obrigatória) e NOME (Not null obrigatório) e
+## os outros campos vão constar como NULL:
+
+  INSERT INTO cliente (matriculaint, nome)
+  VALUES (3, 'Marcos')
+
+
+## Bulk load: são comandos de cargas, ou seja, carregam grandes volumes de dados para a tabela de uma vez só, como por exemplo>
+
+  
+ CREATE TABLE endereco (
+    enderecoID int PRIMARY KEY,
+    logradouro varchar(50) not NULL,
+    numero integer (4),
+    bairro varchar(30),
+    CEP INT CHECK (CEP BETWEEN 10000000 and 99999999),
+    matriculaint integer REFERENCES cliente(matriculaint)
+    )
+
+    INSERT INTO endereco (enderecoid, logradouro, numero, bairro, cep, matriculaint)
+    VALUES 
+    	(1, 'QUADRA', 22, 'NORTE', 73278901, 1),
+      (2, 'RUA FLORES', 105, 'CENTRO', 70123456, 2),
+      (3, 'AVENIDA BRASIL', 500, 'SUL', 72000111, 3)
+
+## Há também a atualização de dados cadastrais, por exemplo, e usamos o comando UPDATE. 
+## ATENÇÃO!! ## SEMPRE PREENCHER A CONDIÇÃO 'WHERE' NO FINAL DO COMANDO UPDATE, SENÃO VAI ATUALIZAR TODOS OS REGISTROS DA TABELA E NÃO SÓ O SELECIONADO!!!
+  
+  UPDATE endereco
+  	set numero = '437'
+    WHERE matriculaint = 1
+
+
+## Para atualizar vários dados de um cliente de uma vez só, não repetir o comando SET e separar os dados por vírgulas
+
+    UPDATE cliente
+      set idade = '59',
+    	estado_civil = 'DV',
+      sexo = 'M',
+      uf = 'MG'
+    WHERE matriculaint = 3
+    
+
+## Se você quiser forçar uma atualização cadastral em todos os clientes, você seta o update como NULL e os dados serão "apagados"
+    
+    UPDATE cliente
+    set uf=null, estado=null
+
+    
+## Deletar linhas de tabelas já populadas EXIGE O USO DA CONDIÇÃO 'WHERE' TAMBÉM!! SENÃO APAGA TODOS OS DADOS!!
+    
+  DELETE FROM cliente 
+  WHERE matriculaint = 3
+
+  
